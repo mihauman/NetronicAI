@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI на роботі — практичний гід</title>
+<meta name="description" content="Практичний гід для співробітників: корпоративний GPT, вибір AI-інструменту, промти та безпека даних.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ambient canvas background -->
+<canvas id="bg-canvas"></canvas>
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="nav-inner">
+    <div class="nav-window">
+      <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+    </div>
+    <a href="#top" class="nav-logo">AI<span class="cursor-blink">_</span>ON_DUTY</a>
+    <nav class="nav-links">
+      <a href="#tool">Інструмент</a>
+      <a href="#matrix">Який AI обрати</a>
+      <a href="#prompts">Промти</a>
+      <a href="#security" class="nav-danger">Безпека</a>
+      <a href="#faq">FAQ</a>
+      <a href="#quiz">Тест</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="terminal-boot" id="terminalBoot">
+        <div class="terminal-titlebar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="terminal-title">security_briefing.sh</span>
+        </div>
+        <div class="terminal-body">
+          <p class="terminal-line" id="typedBoot"></p>
+        </div>
+      </div>
+
+      <p class="eyebrow eyebrow-hero">&gt; ВНУТРІШНІЙ ІНСТРУКТАЖ</p>
+      <h1 class="hero-title reveal-up">Як користуватись<br><span class="text-glow">AI на роботі</span></h1>
+      <p class="hero-sub reveal-up">Практичний гід: інструменти, промти, які реально працюють,<br class="br-desktop"> і правила безпеки, які захищають і вас, і компанію.</p>
+      <div class="hero-cta reveal-up">
+        <a href="#tool" class="btn btn-primary">Почати <span aria-hidden="true">↓</span></a>
+        <a href="#security" class="btn btn-danger-outline">Правила безпеки</a>
+      </div>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- ============ STATS / CONTEXT ============ -->
+  <section class="section" id="context">
+    <div class="container">
+      <p class="eyebrow">&gt; CONTEXT</p>
+      <h2 class="section-title reveal">Чому це важливо саме зараз</h2>
+      <div class="stats-grid">
+        <div class="stat-card reveal">
+          <div class="stat-number" data-count="52" data-suffix="%">0%</div>
+          <p class="stat-label">працівників у США вже використовують AI у своїй роботі — вдвічі більше, ніж 3 роки тому</p>
+          <p class="stat-source">Gallup, 2026</p>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-number" data-count="13" data-suffix="%">0%</div>
+          <p class="stat-label">співробітників пройшли хоч якесь навчання роботі з AI — попри те, що 77% компаній планують перекваліфікацію</p>
+          <p class="stat-source">Founder Reports, 2026</p>
+        </div>
+        <div class="stat-card stat-card-danger reveal">
+          <div class="stat-number" data-count="3" data-suffix=".1%">0%</div>
+          <p class="stat-label">співробітників хоч раз вставляли конфіденційні дані компанії в публічний AI-чат</p>
+          <p class="stat-source">Cyberhaven, дослідження</p>
+        </div>
+      </div>
+      <p class="hint reveal">Тобто AI вже використовують масово, а навчають — одиниці. Саме тому цей гід і існує.</p>
+    </div>
+  </section>
+
+  <!-- ============ CORPORATE GPT ============ -->
+  <section class="section" id="tool">
+    <div class="container">
+      <p class="eyebrow">&gt; PRIMARY_TOOL</p>
+      <h2 class="section-title reveal">Корпоративний GPT — ваш головний інструмент</h2>
+      <p class="section-lead reveal">Це основний AI-асистент для щоденної роботи. Ним варто користуватись у першу чергу — він налаштований компанією та інтегрований у наші робочі процеси.</p>
+
+      <div class="benefit-grid">
+        <div class="benefit-card reveal">
+          <div class="icon-badge"><i data-lucide="sparkles"></i></div>
+          <h3>Легко почати</h3>
+          <p>Не потрібні спеціальні навички — просто напишіть запит своїми словами.</p>
+        </div>
+        <div class="benefit-card reveal">
+          <div class="icon-badge"><i data-lucide="badge-check"></i></div>
+          <h3>Схвалений компанією</h3>
+          <p>Можна використовувати без додаткових дозволів чи погоджень.</p>
+        </div>
+        <div class="benefit-card reveal">
+          <div class="icon-badge"><i data-lucide="users"></i></div>
+          <h3>Спільний акаунт</h3>
+          <p>Ним користується багато співробітників одночасно — це не приватний, персональний простір.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-danger reveal">
+        <i data-lucide="triangle-alert"></i>
+        <p><strong>Саме тому конфіденційні дані сюди вводити не можна:</strong> паролі, персональні дані, внутрішні документи, дані клієнтів — ніщо з цього не має потрапляти навіть у корпоративний GPT, бо акаунт спільний. Єдиний виняток — локальні AI-моделі, розгорнуті офлайн (див. розділ «Безпека» нижче).</p>
+      </div>
+
+      <h3 class="subsection-title reveal">Як почати користуватись</h3>
+      <div class="timeline" id="timeline">
+        <div class="timeline-line"><div class="timeline-line-fill" id="timelineFill"></div></div>
+        <div class="timeline-step reveal">
+          <span class="timeline-num">01</span>
+          <i data-lucide="search"></i>
+          <h4>Відкрийте Корпоративний GPT</h4>
+          <p>За посиланням у робочому порталі чи месенджері компанії</p>
+        </div>
+        <div class="timeline-step reveal">
+          <span class="timeline-num">02</span>
+          <i data-lucide="keyboard"></i>
+          <h4>Напишіть запит своїми словами</h4>
+          <p>Так, ніби пояснюєте задачу колезі — без спеціальних термінів</p>
+        </div>
+        <div class="timeline-step reveal">
+          <span class="timeline-num">03</span>
+          <i data-lucide="message-circle-question"></i>
+          <h4>Уточнюйте, якщо треба</h4>
+          <p>Не підходить відповідь — попросіть переробити чи додайте деталі</p>
+        </div>
+        <div class="timeline-step reveal">
+          <span class="timeline-num">04</span>
+          <i data-lucide="circle-check-big"></i>
+          <h4>Перевірте результат</h4>
+          <p>Прочитайте відповідь і переконайтесь, що факти правильні</p>
+        </div>
+      </div>
+      <p class="hint reveal">Немає «неправильних» запитів — просто спробуйте, з часом це стає звичкою.</p>
+    </div>
+  </section>
+
+  <!-- ============ TOOL MATRIX ============ -->
+  <section class="section" id="matrix">
+    <div class="container">
+      <p class="eyebrow">&gt; TOOL_MATRIX</p>
+      <h2 class="section-title reveal">Який AI обрати для задачі</h2>
+      <p class="section-lead reveal">Крім корпоративного GPT, дозволено користуватись і іншими сервісами — але лише для задач без конфіденційної чи персональної інформації. Кожен інструмент має свою сильну сторону.</p>
+
+      <div class="tool-cards">
+        <div class="tool-card tool-card-featured reveal">
+          <div class="tool-card-head">
+            <i data-lucide="shield-check"></i>
+            <h3>Корпоративний GPT</h3>
+          </div>
+          <p class="tool-tags"><span>щоденні задачі</span><span>внутрішні процеси</span><span>без конфіденційних даних</span></p>
+          <p>Спільний акаунт для всього, що стосується роботи — окрім конфіденційної інформації.</p>
+        </div>
+        <div class="tool-card reveal">
+          <div class="tool-card-head">
+            <i data-lucide="sparkles"></i>
+            <h3>ChatGPT</h3>
+          </div>
+          <p class="tool-tags"><span>брейнсторм</span><span>універсальні тексти</span><span>ідеї</span></p>
+          <p>Добре для загальних задач і швидкого генерування ідей.</p>
+        </div>
+        <div class="tool-card reveal">
+          <div class="tool-card-head">
+            <i data-lucide="file-text"></i>
+            <h3>Claude</h3>
+          </div>
+          <p class="tool-tags"><span>довгі документи</span><span>аналіз тексту</span><span>точні інструкції</span></p>
+          <p>Сильний у роботі з великими текстами й складними завданнями.</p>
+        </div>
+        <div class="tool-card reveal">
+          <div class="tool-card-head">
+            <i data-lucide="mail"></i>
+            <h3>Copilot</h3>
+          </div>
+          <p class="tool-tags"><span>Word</span><span>Outlook</span><span>Teams</span></p>
+          <p>Працює прямо всередині Microsoft 365 — зручно для листів і нотаток.</p>
+        </div>
+        <div class="tool-card reveal">
+          <div class="tool-card-head">
+            <i data-lucide="table"></i>
+            <h3>Gemini</h3>
+          </div>
+          <p class="tool-tags"><span>Google Docs</span><span>Sheets</span><span>таблиці</span></p>
+          <p>Найзручніший у Google Workspace — документи й розрахунки.</p>
+        </div>
+        <div class="tool-card tool-card-pending reveal">
+          <span class="tool-card-badge tool-card-badge-pending">Лише на власному ПК</span>
+          <div class="tool-card-head">
+            <i data-lucide="server-cog"></i>
+            <h3>Локальна LLM (Ollama)</h3>
+          </div>
+          <p class="tool-tags"><span>конфіденційні дані</span><span>офлайн</span><span>власний ПК</span></p>
+          <p>Єдиний спосіб працювати з конфіденційною інформацією — розгорнути AI-модель прямо на робочому ПК, без виходу в інтернет. Це не сервіс від компанії: встановлюється й підтримується самостійно, за погодженням з IT.</p>
+        </div>
+      </div>
+
+      <div class="task-picker reveal" id="taskPicker">
+        <h3><i data-lucide="wand-2"></i> Не знаєте, з чого почати?</h3>
+        <p>Оберіть задачу — підкажемо інструмент</p>
+        <div class="task-options" id="taskOptions">
+          <button data-tool="corp">Написати робочий лист</button>
+          <button data-tool="claude-doc">Проаналізувати документ</button>
+          <button data-tool="gemini">Зробити таблицю чи розрахунок</button>
+          <button data-tool="chatgpt-idea">Швидка ідея / брейнсторм</button>
+          <button data-tool="copilot-office">Робота в Teams / Outlook</button>
+          <button data-tool="local">Робота з конфіденційними даними</button>
+          <button data-tool="chatgpt-translate">Перекласти текст</button>
+          <button data-tool="claude-code">Написати чи перевірити код</button>
+          <button data-tool="copilot-slides">Підготувати презентацію</button>
+        </div>
+        <div class="task-result" id="taskResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GLOSSARY ============ -->
+  <section class="section" id="glossary">
+    <div class="container">
+      <p class="eyebrow">&gt; GLOSSARY</p>
+      <h2 class="section-title reveal">AI-словник простими словами</h2>
+      <p class="section-lead reveal">Терміни, які часто зустрічаються — розшифровані без зайвого жаргону.</p>
+
+      <div class="accordion reveal">
+        <details class="accordion-item">
+          <summary>Промт (prompt) <i data-lucide="chevron-down"></i></summary>
+          <p>Ваш запит до AI — те, що ви пишете, щоб отримати відповідь. Чим точніше сформульований промт, тим кращий результат.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Галюцинація <i data-lucide="chevron-down"></i></summary>
+          <p>Коли AI впевнено видає неправильну чи вигадану інформацію як факт. Саме тому результат завжди варто перевіряти.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Контекстне вікно <i data-lucide="chevron-down"></i></summary>
+          <p>Скільки тексту AI може "тримати в пам'яті" одночасно в межах однієї розмови. Занадто довгий діалог — і початок розмови AI вже "забуде".</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Токен <i data-lucide="chevron-down"></i></summary>
+          <p>Одиниця тексту, якою оперує AI — приблизно частина слова. Довжина відповіді й ціна запиту рахуються в токенах.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>LLM (мовна модель) <i data-lucide="chevron-down"></i></summary>
+          <p>Технологія, на якій побудовані ChatGPT, Claude, Gemini та подібні асистенти. Навчена на величезній кількості тексту, щоб розуміти й генерувати мову.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Few-shot приклад <i data-lucide="chevron-down"></i></summary>
+          <p>Коли ви показуєте AI приклад бажаного результату прямо в промті — це значно підвищує точність відповіді.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Локальна LLM / Ollama <i data-lucide="chevron-down"></i></summary>
+          <p>AI-модель, яка працює прямо на вашому ПК, а не в хмарі стороннього сервісу — дані нікуди не надсилаються. Ollama — найпопулярніший інструмент, щоб розгорнути таку модель самостійно. <strong>Це не централізований сервіс компанії</strong> — встановлюється й підтримується самостійно, бажано за погодженням з IT.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROMPTS ============ -->
+  <section class="section" id="prompts">
+    <div class="container">
+      <p class="eyebrow">&gt; PROMPT_ENGINEERING</p>
+      <h2 class="section-title reveal">Як писати промт, що працює</h2>
+      <p class="section-lead reveal">Три складові — і відповідь AI стає точнішою в рази.</p>
+
+      <div class="formula-row">
+        <div class="formula-card reveal">
+          <span class="formula-num">1</span>
+          <i data-lucide="clipboard-list"></i>
+          <h4>Завдання</h4>
+          <p>Що саме потрібно отримати. Конкретно, не «допоможи з листом».</p>
+        </div>
+        <i data-lucide="arrow-right" class="formula-arrow"></i>
+        <div class="formula-card reveal">
+          <span class="formula-num">2</span>
+          <i data-lucide="file-text"></i>
+          <h4>Контекст</h4>
+          <p>Для кого це, мета, обмеження, важливі деталі.</p>
+        </div>
+        <i data-lucide="arrow-right" class="formula-arrow"></i>
+        <div class="formula-card reveal">
+          <span class="formula-num">3</span>
+          <i data-lucide="layout-template"></i>
+          <h4>Формат</h4>
+          <p>Обсяг, стиль і структура відповіді.</p>
+        </div>
+      </div>
+
+      <div class="examples">
+
+        <div class="example reveal">
+          <div class="example-tag">Приклад 1 · Лист клієнту</div>
+          <div class="example-grid">
+            <div class="chat-mock chat-bad">
+              <div class="chat-head"><i data-lucide="circle-x"></i> Слабкий запит</div>
+              <div class="chat-bubble">«Напиши лист клієнту»</div>
+              <p class="chat-verdict">Незрозуміло про що, кому, який тон — доведеться переписувати.</p>
+            </div>
+            <div class="chat-mock chat-good">
+              <div class="chat-head"><i data-lucide="circle-check"></i> Сильний запит</div>
+              <div class="chat-bubble typing-target" data-text="«Напиши лист клієнту Івану Петровичу — вибачення за затримку доставки на 2 дні через логістику. 5–6 речень, тон ввічливий і професійний. Заверши пропозицією знижки 10% на наступне замовлення»"></div>
+              <p class="chat-verdict">Є завдання, контекст і формат — результат майже готовий.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example reveal">
+          <div class="example-tag">Приклад 2 · Резюме зустрічі</div>
+          <div class="example-grid">
+            <div class="chat-mock chat-bad">
+              <div class="chat-head"><i data-lucide="circle-x"></i> Слабкий запит</div>
+              <div class="chat-bubble">«Зроби підсумок зустрічі»</div>
+              <p class="chat-verdict">AI не знає, що важливо для вас саме зараз.</p>
+            </div>
+            <div class="chat-mock chat-good">
+              <div class="chat-head"><i data-lucide="circle-check"></i> Сильний запит</div>
+              <div class="chat-bubble typing-target" data-text="«Ось нотатки зі зустрічі [вставити текст]. Зроби структурований підсумок: ключові рішення, хто за що відповідає, дедлайни. Формат — короткі пункти, для розсилки команді»"></div>
+              <p class="chat-verdict">Чітка структура — підсумок можна одразу надсилати.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example reveal">
+          <div class="example-tag">Приклад 3 · Внутрішнє оголошення</div>
+          <div class="example-grid">
+            <div class="chat-mock chat-bad">
+              <div class="chat-head"><i data-lucide="circle-x"></i> Слабкий запит</div>
+              <div class="chat-bubble">«Напиши оголошення про технічні роботи»</div>
+              <p class="chat-verdict">Немає дати, тривалості, тону — результат загальний.</p>
+            </div>
+            <div class="chat-mock chat-good">
+              <div class="chat-head"><i data-lucide="circle-check"></i> Сильний запит</div>
+              <div class="chat-bubble typing-target" data-text="«Напиши коротке оголошення (3-4 речення) для всієї компанії: технічні роботи в IT-системі 15 серпня з 22:00 до 02:00, можливі перебої з доступом. Тон — спокійний, інформативний»"></div>
+              <p class="chat-verdict">Всі факти на місці — можна публікувати одразу.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tips-row">
+        <div class="tip-card reveal">
+          <i data-lucide="refresh-cw"></i>
+          <h4>Ітеруйте</h4>
+          <p>Перша відповідь рідко ідеальна — уточнюйте наступним повідомленням.</p>
+        </div>
+        <div class="tip-card reveal">
+          <i data-lucide="copy-plus"></i>
+          <h4>Додавайте приклад</h4>
+          <p>Покажіть зразок бажаного результату — AI підхопить стиль.</p>
+        </div>
+        <div class="tip-card reveal">
+          <i data-lucide="list-tree"></i>
+          <h4>Просіть пояснити хід думок</h4>
+          <p>«Поясни крок за кроком» — корисно для складних чи спірних задач.</p>
+        </div>
+      </div>
+
+      <div class="builder reveal" id="promptBuilder">
+        <h3><i data-lucide="hammer"></i> Конструктор промтів</h3>
+        <p>Оберіть параметри — і отримайте готовий шаблон запиту</p>
+
+        <div class="builder-grid">
+          <div class="builder-field">
+            <label for="bRole">Роль AI</label>
+            <select id="bRole">
+              <option value="HR-менеджер">HR-менеджер</option>
+              <option value="керівник відділу">Керівник відділу</option>
+              <option value="спеціаліст підтримки клієнтів">Спеціаліст підтримки</option>
+              <option value="маркетолог">Маркетолог</option>
+              <option value="асистент з діловодства">Універсальний асистент</option>
+            </select>
+          </div>
+          <div class="builder-field">
+            <label for="bTask">Тип завдання</label>
+            <select id="bTask">
+              <option value="лист">Лист</option>
+              <option value="внутрішнє оголошення">Внутрішнє оголошення</option>
+              <option value="підсумок зустрічі">Підсумок зустрічі</option>
+              <option value="опис вакансії">Опис вакансії</option>
+              <option value="пост для соцмереж">Пост для соцмереж</option>
+            </select>
+          </div>
+          <div class="builder-field">
+            <label for="bTone">Тон</label>
+            <select id="bTone">
+              <option value="офіційний">Офіційний</option>
+              <option value="дружній">Дружній</option>
+              <option value="стислий і діловий">Стислий і діловий</option>
+            </select>
+          </div>
+          <div class="builder-field">
+            <label for="bLength">Обсяг</label>
+            <select id="bLength">
+              <option value="коротко, 2-3 речення">Коротко (2-3 речення)</option>
+              <option value="середньо, один абзац">Середньо (абзац)</option>
+              <option value="детально, кілька абзаців">Детально (кілька абзаців)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="builder-field builder-field-wide">
+          <label for="bTopic">Про що саме? (коротко опишіть суть)</label>
+          <input type="text" id="bTopic" placeholder="напр. перенесення планової відпустки на вересень">
+        </div>
+
+        <button class="btn btn-primary" id="bGenerate">Згенерувати промт <i data-lucide="wand-2"></i></button>
+
+        <div class="builder-output" id="builderOutput" hidden>
+          <div class="builder-output-head">
+            <span>Готовий промт</span>
+            <button class="copy-btn" id="bCopy"><i data-lucide="copy"></i> Копіювати</button>
+          </div>
+          <p id="builderText" class="builder-text"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECURITY ============ -->
+  <section class="section section-security" id="security">
+    <div class="container">
+      <p class="eyebrow eyebrow-danger">&gt; SECURITY_PROTOCOL // ОБОВ'ЯЗКОВО ДО ПРОЧИТАННЯ</p>
+
+      <div class="golden-rule reveal">
+        <p class="golden-rule-text">Не вводьте в AI те,<br>що не можна показати сторонній людині</p>
+        <p class="golden-rule-sub">Це правило стосується будь-якого хмарного AI — включно з корпоративним GPT, адже це спільний акаунт</p>
+      </div>
+
+      <div class="exception-panel exception-panel-pending reveal">
+        <div class="exception-panel-head">
+          <i data-lucide="laptop"></i>
+          <h3>Можливий варіант: локальний AI на власному ПК</h3>
+        </div>
+        <p>Конфіденційну інформацію можна обробляти AI-моделлю, розгорнутою прямо на робочому ПК — без доступу в інтернет. Найпопулярніший інструмент для цього — <strong>Ollama</strong>. Це <strong>не централізований сервіс від компанії</strong> — розгортання й підтримка лягають на вас самих, тож обов'язково погодьте це з IT заздалегідь.</p>
+        <p class="exception-note"><i data-lucide="info"></i> Не плануєте розгортати локальну модель самостійно? Тоді не вводьте конфіденційну інформацію в жоден AI, включно з корпоративним GPT.</p>
+      </div>
+
+      <h3 class="subsection-title reveal">Що ніколи не можна відправляти в хмарний AI</h3>
+      <div class="danger-grid">
+        <div class="danger-card reveal">
+          <i data-lucide="lock"></i>
+          <h4>Паролі та доступи</h4>
+          <p>Логіни, паролі, API-ключі, коди підтвердження.</p>
+          <p class="danger-example">Ризик: доступ до систем компанії виходить з-під контролю.</p>
+        </div>
+        <div class="danger-card reveal">
+          <i data-lucide="user-round"></i>
+          <h4>Персональні дані</h4>
+          <p>ПІБ разом з посадою й зарплатою, паспортні чи медичні дані.</p>
+          <p class="danger-example">Ризик: порушення законодавства про захист персональних даних.</p>
+        </div>
+        <div class="danger-card reveal">
+          <i data-lucide="file-lock-2"></i>
+          <h4>Внутрішні документи</h4>
+          <p>Договори, фінансові звіти, стратегії, презентації для інвесторів.</p>
+          <p class="danger-example">Ризик: витік комерційної таємниці конкурентам.</p>
+        </div>
+        <div class="danger-card reveal">
+          <i data-lucide="handshake"></i>
+          <h4>Дані клієнтів і партнерів</h4>
+          <p>Контакти, замовлення, історія співпраці, будь-які деталі угод.</p>
+          <p class="danger-example">Ризик: втрата довіри клієнта та юридичні наслідки.</p>
+        </div>
+        <div class="danger-card reveal">
+          <i data-lucide="code-xml"></i>
+          <h4>Код і технічні секрети</h4>
+          <p>Вихідний код з внутрішньою логікою, конфігурації серверів.</p>
+          <p class="danger-example">Ризик: вразливості систем стають публічно відомими.</p>
+        </div>
+        <div class="danger-card reveal">
+          <i data-lucide="eye-off"></i>
+          <h4>Нерозкриті рішення</h4>
+          <p>Плани реорганізації, злиття, ще не оголошені фінансові результати.</p>
+          <p class="danger-example">Ризик: інсайдерська інформація, репутаційні наслідки.</p>
+        </div>
+      </div>
+
+      <div class="risk-scanner reveal" id="riskScanner">
+        <h3><i data-lucide="scan-search"></i> Перевірте себе</h3>
+        <p>Оберіть, що ви хочете написати в AI — побачите вердикт</p>
+        <div class="risk-options" id="riskOptions">
+          <button data-risk="safe">Питання про формулу в Excel</button>
+          <button data-risk="danger">Зарплата колеги</button>
+          <button data-risk="safe">Публічна новина компанії</button>
+          <button data-risk="danger">Номер картки клієнта</button>
+          <button data-risk="danger">Пароль від пошти</button>
+          <button data-risk="safe">Ідея для тімбілдингу</button>
+        </div>
+        <div class="risk-result" id="riskResult"></div>
+      </div>
+
+      <div class="case-study reveal">
+        <div class="case-study-tag"><i data-lucide="newspaper"></i> Реальний випадок · 2023</div>
+        <h3>Як Samsung втратив контроль над вихідним кодом</h3>
+        <p>Протягом 20 днів після дозволу використовувати ChatGPT троє інженерів Samsung окремо один від одного вставили в чат-бот конфіденційні дані: вихідний код для виправлення багу, запис внутрішньої наради та код для оптимізації тестів обладнання. Дані пішли на сервери стороннього сервісу — компанія не могла їх "забрати назад". Після цього Samsung повністю заборонив співробітникам генеративний AI.</p>
+        <p class="case-study-lesson"><i data-lucide="lightbulb"></i> Висновок: жоден із співробітників не мав поганих намірів — вони просто хотіли зробити роботу швидше. Саме тому звичка перевіряти, що ви вводите в AI, важливіша за будь-які заборони.</p>
+      </div>
+
+      <div class="checker reveal" id="textChecker">
+        <h3><i data-lucide="shield-search"></i> Перевір текст перед відправкою</h3>
+        <p>Вставте текст, який збираєтесь надіслати в AI — скануємо на типові ризикові слова</p>
+        <textarea id="checkerInput" rows="4" placeholder="Вставте сюди текст запиту..."></textarea>
+        <button class="btn btn-danger-outline" id="checkerBtn">Перевірити <i data-lucide="scan-line"></i></button>
+        <div class="checker-result" id="checkerResult"></div>
+      </div>
+
+      <div class="callout callout-outline reveal">
+        <i data-lucide="life-buoy"></i>
+        <p>Якщо є сумніви — не вводьте і запитайте в IT або керівника.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="section" id="cheatsheet">
+    <div class="container">
+      <p class="eyebrow">&gt; QUICK_REFERENCE</p>
+      <h2 class="section-title reveal">Коротка шпаргалка</h2>
+      <div class="checklist">
+        <div class="checklist-item reveal">
+          <i data-lucide="check"></i>
+          <p>Використовуйте Корпоративний GPT для щоденних робочих задач без конфіденційних даних</p>
+        </div>
+        <div class="checklist-item reveal">
+          <i data-lucide="check"></i>
+          <p>Іншими хмарними AI можна користуватись — лише для публічної інформації</p>
+        </div>
+        <div class="checklist-item reveal">
+          <i data-lucide="check"></i>
+          <p>Обирайте інструмент під задачу: текст, документ, таблиця чи Office</p>
+        </div>
+        <div class="checklist-item reveal">
+          <i data-lucide="check"></i>
+          <p>Формулюйте запит чітко: завдання + контекст + формат</p>
+        </div>
+        <div class="checklist-item reveal">
+          <i data-lucide="check"></i>
+          <p>Завжди перевіряйте результат перед використанням</p>
+        </div>
+        <div class="checklist-item checklist-danger reveal">
+          <i data-lucide="shield-alert"></i>
+          <p>Ніколи не вводьте паролі, персональні чи конфіденційні дані в жоден хмарний AI — включно з корпоративним GPT</p>
+        </div>
+        <div class="checklist-item reveal">
+          <i data-lucide="laptop"></i>
+          <p>Конфіденційне — лише локальна модель на власному ПК, офлайн (напр. Ollama), за погодженням з IT</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ FAQ ============ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <p class="eyebrow">&gt; FAQ</p>
+      <h2 class="section-title reveal">Часті запитання</h2>
+
+      <div class="accordion reveal">
+        <details class="accordion-item">
+          <summary>Я випадково вставив конфіденційні дані в AI. Що робити? <i data-lucide="chevron-down"></i></summary>
+          <p>Одразу повідомте IT-підтримку чи керівника — чим швидше, тим більше можна встигнути зробити. Не намагайтесь "видалити і забути": важливо, щоб компанія знала про ризик і могла відреагувати.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Чи бачить хтось мої запити до корпоративного GPT? <i data-lucide="chevron-down"></i></summary>
+          <p>Це залежить від налаштувань вашої компанії — уточніть у IT-відділу конкретну політику логування та доступу. У будь-якому разі, правило "не вводити конфіденційне" діє незалежно від відповіді.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Чи можна використовувати AI для написання коду? <i data-lucide="chevron-down"></i></summary>
+          <p>Так, але без вставки реального внутрішнього коду компанії в публічні сервіси — використовуйте узагальнені приклади або схвалені компанією інструменти.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>AI дав неправильну або дивну відповідь — що робити? <i data-lucide="chevron-down"></i></summary>
+          <p>Це нормально — AI іноді помиляється ("галюцинує"). Перевірте факти самостійно, уточніть запит або спробуйте переформулювати задачу.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>AI замінить мою роботу? <i data-lucide="chevron-down"></i></summary>
+          <p>AI — інструмент для рутинних текстових задач, а не заміна експертизи. Люди, які вміють ним користуватись, працюють ефективніше — це і є мета цього гіда.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Чи є взагалі місце, куди можна вводити конфіденційні дані? <i data-lucide="chevron-down"></i></summary>
+          <p>Технічно — так, якщо розгорнути AI-модель локально на власному робочому ПК, без доступу в інтернет (наприклад, через Ollama). Це не сервіс від компанії, а самостійне рішення — обов'язково погодьте його з IT, перш ніж так робити. Хмарні AI, включно з корпоративним GPT, для конфіденційної інформації не підходять у будь-якому разі.</p>
+        </details>
+        <details class="accordion-item">
+          <summary>Куди звертатись з іншими питаннями? <i data-lucide="chevron-down"></i></summary>
+          <p>До IT-підтримки з технічних питань або до HR-команди з питань політики використання AI.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="container">
+      <p class="eyebrow">&gt; KNOWLEDGE_CHECK</p>
+      <h2 class="section-title reveal">Перевірте себе: фінальний тест</h2>
+      <p class="section-lead reveal">10 запитань за матеріалами цієї сторінки. Одразу побачите правильну відповідь.</p>
+
+      <div class="quiz-score-bar reveal">
+        <span>Прогрес: <strong id="quizProgress">0</strong>/10</span>
+        <span>Правильно: <strong id="quizScore">0</strong></span>
+      </div>
+
+      <div class="quiz-list" id="quizList">
+
+        <div class="quiz-question reveal" data-correct="2">
+          <p class="quiz-q">1. Який інструмент можна використовувати для роботи з конфіденційною інформацією компанії?</p>
+          <div class="quiz-options">
+            <button data-index="0">Корпоративний GPT</button>
+            <button data-index="1">ChatGPT</button>
+            <button data-index="2">Локальна LLM на власному ПК (напр. Ollama)</button>
+            <button data-index="3">Будь-який публічний AI</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="0">
+          <p class="quiz-q">2. Потрібно проаналізувати 40-сторінковий договір. Який інструмент підійде найкраще?</p>
+          <div class="quiz-options">
+            <button data-index="0">Claude</button>
+            <button data-index="1">Звичайний пошук у Google</button>
+            <button data-index="2">Copilot у Teams</button>
+            <button data-index="3">Жоден, це небезпечно</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="1">
+          <p class="quiz-q">3. Що з переліченого можна вводити в AI?</p>
+          <div class="quiz-options">
+            <button data-index="0">Зарплату колеги</button>
+            <button data-index="1">Публічний прес-реліз компанії</button>
+            <button data-index="2">Пароль від пошти</button>
+            <button data-index="3">Паспортні дані клієнта</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="3">
+          <p class="quiz-q">4. Яка складова НЕ входить у формулу ефективного промту?</p>
+          <div class="quiz-options">
+            <button data-index="0">Завдання</button>
+            <button data-index="1">Контекст</button>
+            <button data-index="2">Формат</button>
+            <button data-index="3">Емодзі</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="2">
+          <p class="quiz-q">5. Колега випадково вставив внутрішній фінзвіт у публічний чат-бот. Що робити?</p>
+          <div class="quiz-options">
+            <button data-index="0">Нічого, це нормально</button>
+            <button data-index="1">Почекати — може, ніхто не помітить</button>
+            <button data-index="2">Повідомити IT або керівника якнайшвидше</button>
+            <button data-index="3">Видалити повідомлення і мовчати</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="1">
+          <p class="quiz-q">6. Яке твердження про корпоративний GPT правильне?</p>
+          <div class="quiz-options">
+            <button data-index="0">Йому можна довіряти будь-які дані без обмежень</button>
+            <button data-index="1">Те саме правило безпеки діє і для нього</button>
+            <button data-index="2">Відповіді не потребують перевірки</button>
+            <button data-index="3">Використовувати можна лише з окремого дозволу щоразу</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="1">
+          <p class="quiz-q">7. Відповідь AI виглядає підозріло чи невпевнено. Що робити?</p>
+          <div class="quiz-options">
+            <button data-index="0">Одразу використати як є</button>
+            <button data-index="1">Перевірити факти самостійно</button>
+            <button data-index="2">Переслати всій команді</button>
+            <button data-index="3">Проігнорувати задачу повністю</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="1">
+          <p class="quiz-q">8. Який інструмент найзручніший для роботи з таблицями в Google Sheets?</p>
+          <div class="quiz-options">
+            <button data-index="0">Copilot</button>
+            <button data-index="1">Gemini</button>
+            <button data-index="2">Claude</button>
+            <button data-index="3">Жоден з них</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="1">
+          <p class="quiz-q">9. Скільки промтів варто написати, щоб отримати хороший результат?</p>
+          <div class="quiz-options">
+            <button data-index="0">Завжди рівно один</button>
+            <button data-index="1">Стільки, скільки треба — ітерація це нормально</button>
+            <button data-index="2">Не більше трьох</button>
+            <button data-index="3">Кількість не має значення</button>
+          </div>
+        </div>
+
+        <div class="quiz-question reveal" data-correct="1">
+          <p class="quiz-q">10. Історія Samsung (2023) навчила компанії, що:</p>
+          <div class="quiz-options">
+            <button data-index="0">AI повністю безпечний для роботи з кодом</button>
+            <button data-index="1">Дані, введені в публічний AI, неможливо "забрати назад"</button>
+            <button data-index="2">Треба заборонити AI абсолютно всім</button>
+            <button data-index="3">Це стосується лише технологічних компаній</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="quiz-summary" id="quizSummary" hidden>
+        <p id="quizSummaryText"></p>
+        <button class="btn btn-primary" id="quizRetry">Пройти ще раз <i data-lucide="rotate-ccw"></i></button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="footer-logo">AI<span class="cursor-blink">_</span>ON_DUTY</p>
+    <p class="footer-text">Питання? Зверніться до IT-підтримки чи HR-команди.</p>
+    <a href="#top" class="footer-top">&uarr; На початок</a>
+  </div>
+</footer>
+
+<!-- Libraries -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
