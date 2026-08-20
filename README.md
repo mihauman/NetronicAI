@@ -54,6 +54,42 @@
 - Питання тесту — блоки `.quiz-question` в `index.html`, атрибут `data-correct` вказує індекс правильної відповіді (рахунок з нуля).
 - Слова, які шукає перевірка тексту — масив `flagWords` в `js/main.js`.
 
+## Форма фідбеку
+
+Кнопка **«Фідбек»** в шапці відкриває модальне вікно з формою (ім'я, оцінка 1–5, коментар). Дані шле напряму в Google Таблицю через безкоштовний Google Apps Script — без окремого бекенду.
+
+**Налаштування (один раз):**
+
+1. Створіть нову Google Таблицю — назвіть перший аркуш, наприклад, `Feedback`.
+2. У таблиці: **Розширення → Apps Script**.
+3. Вставте туди такий код (замінює вміст файлу за замовчуванням):
+
+   ```javascript
+   function doPost(e) {
+     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Feedback');
+     const data = JSON.parse(e.postData.contents);
+     sheet.appendRow([
+       new Date(),
+       data.name || '',
+       data.rating || '',
+       data.comment || '',
+       data.page || '',
+     ]);
+     return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
+       .setMimeType(ContentService.MimeType.JSON);
+   }
+   ```
+
+4. **Deploy → New deployment → Web app**.
+   - Execute as: **Me**
+   - Who has access: **Anyone** (потрібно, щоб фронтенд міг слати запити без логіну)
+5. Скопіюйте URL веб-застосунку (`https://script.google.com/macros/s/.../exec`).
+6. Вставте цей URL у [js/main.js](js/main.js) замість `PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE` (константа `FEEDBACK_ENDPOINT` на початку файлу).
+
+Поки URL не вставлено, форма показує зрозуміле повідомлення замість спроби відправки в нікуди.
+
+**Обмеження підходу:** Apps Script Web App не повертає CORS-заголовки, тому запит відправляється в режимі `no-cors` — фронтенд не може прочитати відповідь і бачить лише сам факт відправки, без підтвердження, що рядок дійсно з'явився в таблиці. Для внутрішнього інструмента це прийнятний компроміс; якщо потрібна гарантована доставка й читання статусу — знадобиться повноцінний бекенд.
+
 ## Технології
 
 - **GSAP + ScrollTrigger** — анімації елементів при скролі

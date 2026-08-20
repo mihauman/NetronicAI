@@ -1,0 +1,7 @@
+<!-- TODO(rebrand): replace this placeholder with the real Netronic logo file
+     (ask design/marketing for the official SVG or PNG) and update the
+     <img src="assets/logo-netronic.svg"> references in index.html accordingly. -->
+<svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Netronic logo placeholder">
+  <rect x="0.5" y="0.5" width="27" height="27" rx="7" fill="#0E141C" stroke="#46FF8E" stroke-width="1"/>
+  <text x="14" y="19" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="700" fill="#46FF8E" text-anchor="middle">N</text>
+</svg>

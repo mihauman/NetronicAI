@@ -23,17 +23,22 @@
   <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
   <div class="nav-inner">
     <div class="nav-window">
-      <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+      <!-- TODO(rebrand): swap for the real Netronic logo file once it's added to assets/ -->
+      <img src="assets/logo-netronic.svg" alt="Netronic" class="nav-brand-logo">
     </div>
-    <a href="#top" class="nav-logo">AI<span class="cursor-blink">_</span>ON_DUTY</a>
+    <a href="#top" class="nav-logo">Netronic<span class="cursor-blink">_</span>AI</a>
     <nav class="nav-links">
       <a href="#tool">Інструмент</a>
       <a href="#matrix">Який AI обрати</a>
       <a href="#prompts">Промти</a>
+      <a href="#role-prompts">За посадою</a>
       <a href="#security" class="nav-danger">Безпека</a>
       <a href="#faq">FAQ</a>
       <a href="#quiz">Тест</a>
     </nav>
+    <button class="feedback-trigger" id="feedbackTrigger" type="button" aria-haspopup="dialog" aria-controls="feedbackModal">
+      <i data-lucide="message-square"></i> <span class="feedback-trigger-label">Фідбек</span>
+    </button>
     <button class="nav-toggle" id="navToggle" aria-label="Меню">
       <span></span><span></span><span></span>
     </button>
@@ -500,6 +505,25 @@
     </div>
   </section>
 
+  <!-- ============ PROMPTS BY ROLE / DEPARTMENT ============ -->
+  <section class="section" id="role-prompts">
+    <div class="container">
+      <p class="eyebrow">&gt; ROLE_PROMPTS</p>
+      <h2 class="section-title reveal">Конструктор промтів під посади</h2>
+      <p class="section-lead reveal">Оберіть свій відділ — і одразу отримаєте кілька готових прикладів промтів під типові задачі саме цієї команди.</p>
+
+      <div class="role-picker reveal" id="rolePicker">
+        <label for="roleSelect">Ваш відділ / департамент</label>
+        <select id="roleSelect">
+          <option value="">— Оберіть відділ —</option>
+        </select>
+      </div>
+
+      <div class="tips-row" id="rolePromptCards" hidden></div>
+      <p class="hint reveal" id="rolePromptHint">Оберіть відділ вище, щоб побачити приклади промтів.</p>
+    </div>
+  </section>
+
   <!-- ============ SECURITY ============ -->
   <section class="section section-security" id="security">
     <div class="container">
@@ -796,9 +820,53 @@
 
 </main>
 
+<!-- ============ FEEDBACK MODAL ============ -->
+<div class="modal-overlay" id="feedbackModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+    <div class="modal-head">
+      <h3 id="feedbackTitle"><i data-lucide="message-square"></i> Залишити фідбек</h3>
+      <button class="modal-close" id="feedbackClose" type="button" aria-label="Закрити"><i data-lucide="x"></i></button>
+    </div>
+
+    <form id="feedbackForm" novalidate>
+      <div class="builder-field builder-field-wide">
+        <label for="fbName">Ім'я</label>
+        <input type="text" id="fbName" name="name" placeholder="Ваше ім'я" autocomplete="name">
+      </div>
+
+      <div class="builder-field builder-field-wide">
+        <label>Оцінка</label>
+        <div class="rating-stars" id="fbRatingStars" role="radiogroup" aria-label="Оцінка від 1 до 5">
+          <button type="button" class="rating-star" data-value="1" aria-label="1 з 5" aria-pressed="false"><i data-lucide="star"></i></button>
+          <button type="button" class="rating-star" data-value="2" aria-label="2 з 5" aria-pressed="false"><i data-lucide="star"></i></button>
+          <button type="button" class="rating-star" data-value="3" aria-label="3 з 5" aria-pressed="false"><i data-lucide="star"></i></button>
+          <button type="button" class="rating-star" data-value="4" aria-label="4 з 5" aria-pressed="false"><i data-lucide="star"></i></button>
+          <button type="button" class="rating-star" data-value="5" aria-label="5 з 5" aria-pressed="false"><i data-lucide="star"></i></button>
+        </div>
+        <input type="hidden" id="fbRating" name="rating" value="">
+      </div>
+
+      <div class="builder-field builder-field-wide">
+        <label for="fbComment">Коментар</label>
+        <textarea id="fbComment" name="comment" rows="4" placeholder="Що варто покращити чи додати?"></textarea>
+      </div>
+
+      <p class="form-error" id="feedbackError" hidden></p>
+
+      <button class="btn btn-primary" type="submit" id="feedbackSubmit">Надіслати <i data-lucide="send"></i></button>
+    </form>
+
+    <div class="form-success" id="feedbackSuccess" hidden>
+      <i data-lucide="check-circle"></i>
+      <p>Дякуємо за фідбек! Ми його врахуємо.</p>
+      <button class="btn btn-primary" type="button" id="feedbackDone">Закрити</button>
+    </div>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="container footer-inner">
-    <p class="footer-logo">AI<span class="cursor-blink">_</span>ON_DUTY</p>
+    <p class="footer-logo">Netronic<span class="cursor-blink">_</span>AI</p>
     <p class="footer-text">Питання? Зверніться до <a href="https://help.netronic.team/" target="_blank" rel="noopener" class="inline-link">IT-підтримки</a> чи HR-команди.</p>
     <a href="#top" class="footer-top">&uarr; На початок</a>
   </div>
