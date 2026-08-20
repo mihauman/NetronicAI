@@ -635,7 +635,31 @@ main, .nav, .footer { position: relative; z-index: 2; }
   padding: 12px 14px; border-radius: 6px; font-family: var(--font-body); font-size: 14px;
 }
 .role-picker select:focus { outline: 1px solid var(--primary); border-color: var(--primary); }
-#rolePromptCards[hidden] { display: none; }
+
+/* ---------- ROLE PROMPT GENERATOR ("real" constructor) ---------- */
+.builder {
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px; margin-top: 8px;
+}
+.role-builder-fields { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
+.role-builder-fields .builder-field { flex: 1; min-width: 220px; }
+.builder-output {
+  margin-top: 22px; background: var(--bg-alt); border: 1px solid var(--primary); border-radius: 8px;
+  padding: 20px;
+}
+.builder-output-head {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--primary); margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+.copy-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+  padding: 6px 12px; border-radius: 20px; font-size: 12px; transition: all 0.2s;
+}
+.copy-btn:hover { border-color: var(--primary); color: var(--primary); }
+.copy-btn.copied { border-color: var(--primary); color: var(--primary); }
+.builder-text { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; color: var(--text); }
 
 /* ---------- shared field styles (used by feedback form) ---------- */
 .builder-field label {

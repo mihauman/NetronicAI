@@ -451,7 +451,7 @@
     <div class="container">
       <p class="eyebrow">&gt; ROLE_PROMPTS</p>
       <h2 class="section-title reveal">Конструктор промтів під посади</h2>
-      <p class="section-lead reveal">Оберіть свій відділ — і одразу отримаєте кілька готових прикладів промтів під типові задачі саме цієї команди.</p>
+      <p class="section-lead reveal">Оберіть відділ і тип завдання, за потреби вкажіть деталь — і отримаєте готовий промт під типову задачу саме цієї команди.</p>
 
       <div class="role-picker reveal" id="rolePicker">
         <label for="roleSelect">Ваш відділ / департамент</label>
@@ -460,8 +460,30 @@
         </select>
       </div>
 
-      <div class="tips-row" id="rolePromptCards" hidden></div>
-      <p class="hint reveal" id="rolePromptHint">Оберіть відділ вище, щоб побачити приклади промтів.</p>
+      <div class="builder reveal" id="roleBuilder" hidden>
+        <div class="role-builder-fields">
+          <div class="builder-field">
+            <label for="roleTask">Тип завдання</label>
+            <select id="roleTask"></select>
+          </div>
+          <div class="builder-field builder-field-wide">
+            <label for="roleTopic">Про що саме? (необов'язково — підставимо замість [...] у промті)</label>
+            <input type="text" id="roleTopic" placeholder="напр. менеджер з продажу (Україна)">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="roleGenerate" type="button">Згенерувати промт <i data-lucide="wand-2"></i></button>
+
+        <div class="builder-output" id="roleOutput" hidden>
+          <div class="builder-output-head">
+            <span>Готовий промт</span>
+            <button class="copy-btn" id="roleCopy" type="button"><i data-lucide="copy"></i> Копіювати</button>
+          </div>
+          <p id="roleOutputText" class="builder-text"></p>
+        </div>
+      </div>
+
+      <p class="hint reveal" id="rolePromptHint">Оберіть відділ вище, щоб згенерувати промт.</p>
     </div>
   </section>
 
