@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initRiskScanner();
   initNavToggle();
   initProgressBar();
-  initPromptBuilder();
   initTextChecker();
   initQuiz();
   initFeedbackForm();
@@ -296,52 +295,6 @@ function initRiskScanner() {
       gsap.fromTo(result, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.3 });
     }
   });
-}
-
-// ---------- Prompt builder ----------
-function initPromptBuilder() {
-  const btn = document.getElementById('bGenerate');
-  const output = document.getElementById('builderOutput');
-  const textEl = document.getElementById('builderText');
-  const copyBtn = document.getElementById('bCopy');
-  if (!btn || !output || !textEl) return;
-
-  btn.addEventListener('click', () => {
-    const role = document.getElementById('bRole').value;
-    const task = document.getElementById('bTask').value;
-    const tone = document.getElementById('bTone').value;
-    const length = document.getElementById('bLength').value;
-    const topic = document.getElementById('bTopic').value.trim() || '[опишіть тему]';
-
-    const prompt = `Ти — ${role}. Напиши ${task} про: ${topic}. ` +
-      `Обсяг — ${length}. Тон — ${tone}. ` +
-      `Якщо чогось не вистачає для якісної відповіді — постав уточнююче запитання.`;
-
-    textEl.textContent = prompt;
-    output.hidden = false;
-    if (window.gsap) {
-      gsap.fromTo(output, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
-    }
-    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(textEl.textContent);
-        copyBtn.classList.add('copied');
-        copyBtn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
-        if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-          copyBtn.classList.remove('copied');
-          copyBtn.innerHTML = '<i data-lucide="copy"></i> Копіювати';
-          if (window.lucide) lucide.createIcons();
-        }, 1800);
-      } catch (e) {
-        // clipboard API unavailable — silently ignore, text is still selectable
-      }
-    });
-  }
 }
 
 // ---------- Text checker: scan for risky keywords ----------

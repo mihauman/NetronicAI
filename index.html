@@ -444,64 +444,6 @@
         </div>
       </div>
 
-      <div class="builder reveal" id="promptBuilder">
-        <h3><i data-lucide="hammer"></i> Конструктор промтів</h3>
-        <p>Оберіть параметри — і отримайте готовий шаблон запиту</p>
-
-        <div class="builder-grid">
-          <div class="builder-field">
-            <label for="bRole">Роль AI</label>
-            <select id="bRole">
-              <option value="HR-менеджер">HR-менеджер</option>
-              <option value="керівник відділу">Керівник відділу</option>
-              <option value="спеціаліст підтримки клієнтів">Спеціаліст підтримки</option>
-              <option value="маркетолог">Маркетолог</option>
-              <option value="асистент з діловодства">Універсальний асистент</option>
-            </select>
-          </div>
-          <div class="builder-field">
-            <label for="bTask">Тип завдання</label>
-            <select id="bTask">
-              <option value="лист">Лист</option>
-              <option value="внутрішнє оголошення">Внутрішнє оголошення</option>
-              <option value="підсумок зустрічі">Підсумок зустрічі</option>
-              <option value="опис вакансії">Опис вакансії</option>
-              <option value="пост для соцмереж">Пост для соцмереж</option>
-            </select>
-          </div>
-          <div class="builder-field">
-            <label for="bTone">Тон</label>
-            <select id="bTone">
-              <option value="офіційний">Офіційний</option>
-              <option value="дружній">Дружній</option>
-              <option value="стислий і діловий">Стислий і діловий</option>
-            </select>
-          </div>
-          <div class="builder-field">
-            <label for="bLength">Обсяг</label>
-            <select id="bLength">
-              <option value="коротко, 2-3 речення">Коротко (2-3 речення)</option>
-              <option value="середньо, один абзац">Середньо (абзац)</option>
-              <option value="детально, кілька абзаців">Детально (кілька абзаців)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="builder-field builder-field-wide">
-          <label for="bTopic">Про що саме? (коротко опишіть суть)</label>
-          <input type="text" id="bTopic" placeholder="напр. перенесення планової відпустки на вересень">
-        </div>
-
-        <button class="btn btn-primary" id="bGenerate">Згенерувати промт <i data-lucide="wand-2"></i></button>
-
-        <div class="builder-output" id="builderOutput" hidden>
-          <div class="builder-output-head">
-            <span>Готовий промт</span>
-            <button class="copy-btn" id="bCopy"><i data-lucide="copy"></i> Копіювати</button>
-          </div>
-          <p id="builderText" class="builder-text"></p>
-        </div>
-      </div>
     </div>
   </section>
 

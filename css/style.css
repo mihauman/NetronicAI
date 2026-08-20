@@ -637,17 +637,7 @@ main, .nav, .footer { position: relative; z-index: 2; }
 .role-picker select:focus { outline: 1px solid var(--primary); border-color: var(--primary); }
 #rolePromptCards[hidden] { display: none; }
 
-/* ---------- PROMPT BUILDER ---------- */
-.builder {
-  background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 32px; margin-top: 8px;
-}
-.builder h3 { display: flex; align-items: center; gap: 10px; font-size: 18px; margin-bottom: 8px; }
-.builder h3 i { color: var(--primary); }
-.builder > p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
-.builder-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px;
-}
+/* ---------- shared field styles (used by feedback form) ---------- */
 .builder-field label {
   display: block; font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
   margin-bottom: 8px; letter-spacing: 0.03em;
@@ -658,23 +648,6 @@ main, .nav, .footer { position: relative; z-index: 2; }
 }
 .builder-field select:focus, .builder-field input:focus { outline: 1px solid var(--primary); border-color: var(--primary); }
 .builder-field-wide { margin-bottom: 22px; }
-.builder-output {
-  margin-top: 22px; background: var(--bg-alt); border: 1px solid var(--primary); border-radius: 8px;
-  padding: 20px;
-}
-.builder-output-head {
-  display: flex; align-items: center; justify-content: space-between;
-  font-family: var(--font-mono); font-size: 11.5px; color: var(--primary); margin-bottom: 12px;
-  letter-spacing: 0.04em;
-}
-.copy-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: transparent; border: 1px solid var(--border); color: var(--text-muted);
-  padding: 6px 12px; border-radius: 20px; font-size: 12px; transition: all 0.2s;
-}
-.copy-btn:hover { border-color: var(--primary); color: var(--primary); }
-.copy-btn.copied { border-color: var(--primary); color: var(--primary); }
-.builder-text { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; color: var(--text); }
 
 /* ---------- CASE STUDY ---------- */
 .case-study {
@@ -759,7 +732,6 @@ main, .nav, .footer { position: relative; z-index: 2; }
   .example-grid { grid-template-columns: 1fr; }
   .formula-row { flex-direction: column; }
   .formula-arrow { transform: rotate(90deg); align-self: flex-start; margin-left: 20px; }
-  .builder-grid { grid-template-columns: 1fr 1fr; }
   .quiz-options { grid-template-columns: 1fr; }
   .live-grid { grid-template-columns: 1fr; }
   .live-checklist { grid-template-columns: 1fr; }
@@ -775,6 +747,5 @@ main, .nav, .footer { position: relative; z-index: 2; }
   .br-desktop { display: inline; }
   .hero { padding-top: 120px; }
   .golden-rule { padding: 40px 20px; }
-  .builder-grid { grid-template-columns: 1fr; }
   .quiz-score-bar { flex-direction: column; gap: 6px; align-items: flex-start; top: 60px; }
 }
