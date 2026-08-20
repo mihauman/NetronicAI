@@ -4,7 +4,7 @@
 
 // TODO(feedback-form): paste the URL of your deployed Google Apps Script Web App here.
 // See README.md → "Форма фідбеку" for the deployment steps and the ready-to-use script.
-const FEEDBACK_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+const FEEDBACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxSOvEn0JHWxDDAsuKYiZzHa2VWYHr2-gZr6gFUsMebIwDXA7wJTmNQ-Oyv03DS2Sut/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
   initIcons();
