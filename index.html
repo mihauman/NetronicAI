@@ -302,6 +302,36 @@
         </div>
       </div>
 
+      <div class="live-example reveal">
+        <div class="live-example-tag"><i data-lucide="zap"></i> Живий приклад · Від промту до результату</div>
+        <p class="live-example-lead">Ось як виглядає весь ланцюжок: промт, побудований за формулою вище → повна відповідь AI → розбір, чому кожна вимога виконана точно.</p>
+
+        <div class="live-grid">
+          <div class="live-prompt">
+            <div class="chat-head"><i data-lucide="keyboard"></i> Промт</div>
+            <div class="chat-bubble">«Напиши лист клієнту Івану Петровичу — вибачення за затримку доставки на 2 дні через логістику. 5–6 речень, тон ввічливий і професійний. Заверши пропозицією знижки 10% на наступне замовлення»</div>
+          </div>
+
+          <div class="live-response">
+            <div class="chat-head"><i data-lucide="bot"></i> Відповідь AI</div>
+            <div class="response-text">
+              <p>Доброго дня, Іване Петровичу!<span class="marker">1</span></p>
+              <p>Щиро перепрошуємо за затримку доставки вашого замовлення на 2 дні — це сталося через тимчасові ускладнення в роботі нашого логістичного партнера.<span class="marker">2</span> Розуміємо, наскільки важливо отримувати замовлення вчасно, і вже вживаємо заходів, щоб уникати подібних ситуацій надалі.<span class="marker">3</span></p>
+              <p>На знак вибачення пропонуємо знижку 10% на ваше наступне замовлення — просто повідомте менеджеру код SORRY10 при оформленні.<span class="marker">4</span> Дякуємо за розуміння та довіру до нас!</p>
+              <p>З повагою,<br>Команда підтримки клієнтів</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-checklist">
+          <div class="live-check"><span class="marker">1</span><p>Звернення особисто до Івана Петровича — саме так, як вказано в промті</p></div>
+          <div class="live-check"><span class="marker">2</span><p>Причина затримки названа чітко — «2 дні», «логістика» — прямо з контексту промту</p></div>
+          <div class="live-check"><span class="marker">3</span><p>Тон ввічливий і професійний, без канцеляризмів — саме так, як просили</p></div>
+          <div class="live-check"><span class="marker">4</span><p>Лист завершується пропозицією знижки 10% — точно за вимогою формату</p></div>
+        </div>
+        <p class="hint">Обсяг — 6 речень, укладається у вимогу «5–6 речень». Жодної зайвої вигадки — AI використав лише те, що було в промті.</p>
+      </div>
+
       <div class="examples">
 
         <div class="example reveal">
@@ -352,6 +382,38 @@
           </div>
         </div>
 
+        <div class="example reveal">
+          <div class="example-tag">Приклад 4 · Пост на свято</div>
+          <div class="example-grid">
+            <div class="chat-mock chat-bad">
+              <div class="chat-head"><i data-lucide="circle-x"></i> Слабкий запит</div>
+              <div class="chat-bubble">«Напиши пост на Новий рік»</div>
+              <p class="chat-verdict">Немає ні фактів про компанію, ні тону, ні платформи — вийде шаблонний текст.</p>
+            </div>
+            <div class="chat-mock chat-good">
+              <div class="chat-head"><i data-lucide="circle-check"></i> Сильний запит</div>
+              <div class="chat-bubble typing-target" data-text="«Ти — SMM-менеджер компанії. Напиши привітання з Новим роком для Instagram (4-5 речень). Згадай, що це був рік зростання команди та нових проєктів. Тон — теплий, святковий, з легким гумором. Заверши побажанням на наступний рік»"></div>
+              <p class="chat-verdict">Є роль, платформа, факт про компанію, тон і завершення.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example reveal">
+          <div class="example-tag">Приклад 5 · Генерація ідей для HR</div>
+          <div class="example-grid">
+            <div class="chat-mock chat-bad">
+              <div class="chat-head"><i data-lucide="circle-x"></i> Слабкий запит</div>
+              <div class="chat-bubble">«Дай ідеї для HR»</div>
+              <p class="chat-verdict">Незрозуміло, ідеї для чого саме — відповідь буде занадто загальною.</p>
+            </div>
+            <div class="chat-mock chat-good">
+              <div class="chat-head"><i data-lucide="circle-check"></i> Сильний запит</div>
+              <div class="chat-bubble typing-target" data-text="«Ти — HR-експерт з нематеріальної мотивації. Запропонуй 5 ідей для підвищення залученості співробітників в офісі на 50 людей, бюджет обмежений. Формат — список: назва ідеї + одне речення пояснення»"></div>
+              <p class="chat-verdict">AI можна просити не лише текст, а й структурований список варіантів на вибір.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="tips-row">
@@ -369,6 +431,11 @@
           <i data-lucide="list-tree"></i>
           <h4>Просіть пояснити хід думок</h4>
           <p>«Поясни крок за кроком» — корисно для складних чи спірних задач.</p>
+        </div>
+        <div class="tip-card reveal">
+          <i data-lucide="mic"></i>
+          <h4>Використовуйте голосовий ввід</h4>
+          <p>Більшість AI-інструментів приймають голосові повідомлення — просто наговоріть запит, якщо друкувати незручно.</p>
         </div>
       </div>
 
@@ -628,13 +695,13 @@
           </div>
         </div>
 
-        <div class="quiz-question reveal" data-correct="0">
-          <p class="quiz-q">2. Потрібно проаналізувати 40-сторінковий договір. Який інструмент підійде найкраще?</p>
+        <div class="quiz-question reveal" data-correct="3">
+          <p class="quiz-q">2. Потрібно проаналізувати 40-сторінковий договір компанії. Який інструмент підійде найкраще?</p>
           <div class="quiz-options">
             <button data-index="0">Claude</button>
             <button data-index="1">Звичайний пошук у Google</button>
             <button data-index="2">Copilot у Teams</button>
-            <button data-index="3">Жоден, це небезпечно</button>
+            <button data-index="3">Жоден, це небезпечно — договір конфіденційний</button>
           </div>
         </div>
 
