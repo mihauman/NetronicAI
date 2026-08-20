@@ -2,6 +2,10 @@
 // AI на роботі — main.js
 // ===========================================================
 
+// TODO(feedback-form): paste the URL of your deployed Google Apps Script Web App here.
+// See README.md → "Форма фідбеку" for the deployment steps and the ready-to-use script.
+const FEEDBACK_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+
 document.addEventListener('DOMContentLoaded', () => {
   initIcons();
   initBackgroundCanvas();
@@ -16,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initPromptBuilder();
   initTextChecker();
   initQuiz();
+  initFeedbackForm();
+  initRolePrompts();
 });
 
 // ---------- Scroll progress bar ----------
@@ -100,7 +106,7 @@ function initTerminalBoot() {
   if (!el) return;
 
   const lines = [
-    '> ініціалізація протоколу AI_ON_DUTY...',
+    '> ініціалізація протоколу Netronic_AI...',
     '> модуль: Корпоративний GPT ... OK',
     '> модуль: Правила безпеки ... OK',
     '> статус: ГОТОВО ДО РОБОТИ_',
@@ -443,6 +449,301 @@ function initQuiz() {
 
   if (retryBtn) retryBtn.addEventListener('click', reset);
 }
+// ---------- Feedback form (modal + Google Sheets via Apps Script) ----------
+function initFeedbackForm() {
+  const trigger = document.getElementById('feedbackTrigger');
+  const modal = document.getElementById('feedbackModal');
+  const closeBtn = document.getElementById('feedbackClose');
+  const doneBtn = document.getElementById('feedbackDone');
+  const form = document.getElementById('feedbackForm');
+  const errorEl = document.getElementById('feedbackError');
+  const successEl = document.getElementById('feedbackSuccess');
+  const submitBtn = document.getElementById('feedbackSubmit');
+  const nameInput = document.getElementById('fbName');
+  const commentInput = document.getElementById('fbComment');
+  const ratingInput = document.getElementById('fbRating');
+  const stars = document.querySelectorAll('.rating-star');
+  if (!trigger || !modal || !form) return;
+
+  function openModal() {
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    nameInput.focus();
+  }
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+  function resetForm() {
+    form.reset();
+    form.hidden = false;
+    successEl.hidden = true;
+    errorEl.hidden = true;
+    ratingInput.value = '';
+    stars.forEach(s => { s.classList.remove('is-active'); s.setAttribute('aria-pressed', 'false'); });
+    [nameInput, commentInput].forEach(el => el.classList.remove('field-invalid'));
+    submitBtn.disabled = false;
+    submitBtn.textContent = '';
+    submitBtn.innerHTML = 'Надіслати <i data-lucide="send"></i>';
+    if (window.lucide) lucide.createIcons();
+  }
+
+  trigger.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  if (doneBtn) doneBtn.addEventListener('click', () => { closeModal(); resetForm(); });
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+  // star rating
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = parseInt(star.dataset.value, 10);
+      ratingInput.value = String(value);
+      stars.forEach(s => {
+        const active = parseInt(s.dataset.value, 10) <= value;
+        s.classList.toggle('is-active', active);
+        s.setAttribute('aria-pressed', String(active));
+      });
+    });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.hidden = true;
+    [nameInput, commentInput].forEach(el => el.classList.remove('field-invalid'));
+
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+    const rating = ratingInput.value;
+
+    const problems = [];
+    if (!name) { problems.push('вкажіть ім\'я'); nameInput.classList.add('field-invalid'); }
+    if (!rating) { problems.push('оберіть оцінку'); }
+    if (!comment || comment.length < 3) { problems.push('додайте короткий коментар'); commentInput.classList.add('field-invalid'); }
+
+    if (problems.length) {
+      errorEl.hidden = false;
+      errorEl.textContent = 'Будь ласка, заповніть форму: ' + problems.join(', ') + '.';
+      return;
+    }
+
+    if (!FEEDBACK_ENDPOINT || FEEDBACK_ENDPOINT.startsWith('PASTE_')) {
+      errorEl.hidden = false;
+      errorEl.textContent = 'Форма ще не підключена до Google Sheets — див. README, розділ "Форма фідбеку".';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Надсилаємо...';
+
+    const payload = {
+      name, rating, comment,
+      page: location.href,
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      // Apps Script Web Apps don't send CORS headers, so the response is opaque
+      // in 'no-cors' mode — we can't read it, only tell whether the request itself
+      // was sent. text/plain avoids a CORS preflight request.
+      await fetch(FEEDBACK_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      });
+      form.hidden = true;
+      successEl.hidden = false;
+      if (window.lucide) lucide.createIcons();
+    } catch (err) {
+      errorEl.hidden = false;
+      errorEl.textContent = 'Не вдалося надіслати фідбек — перевірте з\'єднання й спробуйте ще раз.';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Надіслати <i data-lucide="send"></i>';
+      if (window.lucide) lucide.createIcons();
+    }
+  });
+}
+
+// ---------- Prompts by role / department ----------
+// Grouped by the company's real department structure (17 groups).
+const ROLE_PROMPTS = {
+  hr: {
+    label: 'Відділ персоналу (HR)',
+    prompts: [
+      { icon: 'file-text', title: 'Опис вакансії', desc: '«Напиши опис вакансії на посаду [назва]: обов’язки, вимоги, умови. Тон діловий, 6-8 речень»' },
+      { icon: 'message-circle-question', title: 'Питання для співбесіди', desc: '«Склади 8 питань для співбесіди на позицію [посада] — і на хардскіли, і на м’які навички»' },
+      { icon: 'mail', title: 'Лист-відмова кандидату', desc: '«Напиши ввічливий лист-відмову кандидату після співбесіди на [посада], 3-4 речення, без канцеляризмів»' },
+      { icon: 'clipboard-list', title: 'План онбордингу', desc: '«Склади чек-лист адаптації нового співробітника на перші два тижні для посади [посада]»' },
+    ],
+  },
+  office: {
+    label: 'Відділ комунікації та забезпечення офісу',
+    prompts: [
+      { icon: 'building-2', title: 'Внутрішнє повідомлення', desc: '«Напиши коротке повідомлення про новий порядок замовлення канцелярії в офісі, 3-4 речення»' },
+      { icon: 'mail', title: 'Лист постачальнику', desc: '«Напиши лист постачальнику клінінгових послуг із запитом комерційної пропозиції на прибирання офісу 500 м²»' },
+      { icon: 'list-tree', title: 'Інструкція для новачків', desc: '«Склади коротку інструкцію: як забронювати переговорну кімнату і замовити перепустку для гостя»' },
+    ],
+  },
+  marketing: {
+    label: 'Відділ маркетингу',
+    prompts: [
+      { icon: 'megaphone', title: 'Заголовки для лендінгу', desc: '«Напиши 3 варіанти заголовка для лендінгу продукту [назва], акцент на головну перевагу, до 8 слів»' },
+      { icon: 'calendar', title: 'План контенту на місяць', desc: '«Згенеруй план публікацій на місяць для Instagram: 12 тем + короткий опис кожної»' },
+      { icon: 'split', title: 'A/B варіанти реклами', desc: '«Напиши 4 короткі варіанти реклами (до 90 символів) для Facebook Ads, що просуває [продукт]»' },
+    ],
+  },
+  content: {
+    label: 'Відділ розкриття цінності (контент і бренд)',
+    prompts: [
+      { icon: 'clapperboard', title: 'Сценарій відео', desc: '«Напиши сценарій 60-секундного відео про [продукт]: гачок, 3 переваги, заклик до дії»' },
+      { icon: 'pen-tool', title: 'Структура статті', desc: '«Побудуй структуру статті на тему [тема]: вступ, 4 підрозділи з тезами, висновок»' },
+      { icon: 'sparkles', title: 'Пост у фірмовому тоні', desc: '«Перепиши текст [вставити] у теплому, людяному тоні бренду, коротко, з легким гумором»' },
+    ],
+  },
+  sales_commerce: {
+    label: 'Відділ продажів (Комерція)',
+    prompts: [
+      { icon: 'handshake', title: 'Комерційна пропозиція', desc: '«Напиши коротку КП для клієнта [компанія] на [продукт], з акцентом на вигоду, 6-8 речень»' },
+      { icon: 'send', title: 'Follow-up лист', desc: '«Напиши ввічливий follow-up клієнту, який не відповідав два тижні після демо, з конкретним наступним кроком»' },
+      { icon: 'message-square', title: 'Відповідь на заперечення', desc: '«Дай 3 варіанти відповіді на заперечення "це дорого" для [продукт], аргументовано, без тиску»' },
+    ],
+  },
+  sales_military: {
+    label: 'Відділ продажів (Мілітарі)',
+    prompts: [
+      { icon: 'shield', title: 'Опис для тендеру', desc: '«Структуруй технічний опис виробу [назва] для тендерної документації: характеристики, стандарти, переваги»' },
+      { icon: 'mail', title: 'Лист партнеру англійською', desc: '«Напиши офіційний лист партнеру англійською з пропозицією співпраці щодо постачання [продукт]»' },
+      { icon: 'list-checks', title: 'Підготовка до перемовин', desc: '«Склади 5 імовірних питань замовника щодо [продукт] і короткі тези відповіді на кожне»' },
+    ],
+  },
+  finance: {
+    label: 'Відділ витрат (фінанси)',
+    prompts: [
+      { icon: 'wallet', title: 'Пояснення бюджету', desc: '«Поясни простими словами відхилення факту від бюджету по статті [стаття] за [період], для нефінансиста»' },
+      { icon: 'mail', title: 'Лист про прострочену оплату', desc: '«Напиши ввічливий, але чіткий лист контрагенту про прострочену оплату рахунку №[номер] до [дата]»' },
+      { icon: 'table', title: 'Порівняння варіантів витрат', desc: '«Зроби порівняльну таблицю трьох варіантів [постачальник] за ціною, умовами й ризиками»' },
+    ],
+  },
+  accounting: {
+    label: 'Відділ обліку (бухгалтерія)',
+    prompts: [
+      { icon: 'calculator', title: 'Пояснення проведення', desc: '«Поясни просто, що означає бухгалтерське проведення [вставити] і навіщо воно потрібне»' },
+      { icon: 'clipboard-list', title: 'Чек-лист закриття місяця', desc: '«Склади чек-лист кроків для закриття місяця в обліку виробничого підприємства»' },
+      { icon: 'mail', title: 'Нагадування про документи', desc: '«Напиши нагадування контрагенту про необхідність надати акт виконаних робіт за [період]»' },
+    ],
+  },
+  production: {
+    label: 'Виробничий департамент',
+    prompts: [
+      { icon: 'factory', title: 'Пам’ятка з техніки безпеки', desc: '«Напиши коротку пам’ятку з техніки безпеки для дільниці [назва], 5 пунктів, простою мовою»' },
+      { icon: 'list-tree', title: 'Опис техпроцесу', desc: '«Структуруй опис етапів виготовлення [виріб] для внутрішньої документації, покроково»' },
+      { icon: 'file-text', title: 'Звіт про простій', desc: '«Допоможи структурувати короткий звіт про причину й наслідки простою лінії [назва] за [дата]»' },
+    ],
+  },
+  support_service: {
+    label: 'Відділ технічної підтримки та сервісу',
+    prompts: [
+      { icon: 'life-buoy', title: 'Відповідь на скаргу', desc: '«Напиши ввічливу відповідь клієнту, який скаржиться на [проблема], з вибаченням і планом вирішення»' },
+      { icon: 'book-open', title: 'Інструкція для користувача', desc: '«Спрости технічний текст [вставити] у покрокову інструкцію для нетехнічного користувача»' },
+      { icon: 'help-circle', title: 'База типових питань', desc: '«Згенеруй 5 типових питань клієнтів про [продукт] з короткими відповідями для бази знань»' },
+    ],
+  },
+  quality: {
+    label: 'Відділ якості',
+    prompts: [
+      { icon: 'badge-check', title: 'Звіт про невідповідність', desc: '«Структуруй опис невідповідності [опис]: причина, вплив, коригувальна дія»' },
+      { icon: 'clipboard-list', title: 'Чек-лист вхідного контролю', desc: '«Склади чек-лист перевірки якості для партії [матеріал], 6-8 пунктів»' },
+      { icon: 'book-open', title: 'Пояснення стандарту', desc: '«Поясни простими словами вимогу стандарту [назва/пункт] для співробітників цеху»' },
+    ],
+  },
+  pr_partnerships: {
+    label: 'PR, розвиток і партнерства',
+    prompts: [
+      { icon: 'newspaper', title: 'Прес-реліз', desc: '«Напиши короткий прес-реліз про [подія компанії], 5-6 речень, офіційний тон»' },
+      { icon: 'handshake', title: 'Лист потенційному партнеру', desc: '«Напиши лист-пропозицію партнерства компанії [назва], з описом взаємної вигоди»' },
+      { icon: 'linkedin', title: 'Пост для LinkedIn', desc: '«Напиши пост для LinkedIn про [досягнення компанії], професійний тон, до 100 слів»' },
+    ],
+  },
+  legal: {
+    label: 'Юридичний департамент',
+    prompts: [
+      { icon: 'scale', title: 'Пояснення пункту договору', desc: '«Поясни простими словами, що означає пункт договору [вставити] і які ризики він несе»' },
+      { icon: 'file-lock-2', title: 'Чернетка застереження', desc: '«Запропонуй формулювання пункту про конфіденційність для договору з підрядником»' },
+      { icon: 'triangle-alert', title: 'Ризики угоди', desc: '«Виділи потенційні юридичні ризики в описі угоди [вставити] у вигляді короткого списку»' },
+    ],
+  },
+  product_management: {
+    label: 'Product Management',
+    prompts: [
+      { icon: 'box', title: 'User story', desc: '«Напиши user story для фічі [назва]: як [роль], я хочу [дія], щоб [мета]»' },
+      { icon: 'layout-template', title: 'Бриф фічі', desc: '«Структуруй короткий бриф фічі [назва]: проблема, рішення, критерії успіху»' },
+      { icon: 'message-circle-question', title: 'Питання для дискавері', desc: '«Склади 6 відкритих питань для інтерв’ю з користувачем щодо проблеми [опис]»' },
+    ],
+  },
+  rnd: {
+    label: 'R&D / розробка продуктів',
+    prompts: [
+      { icon: 'cpu', title: 'Пояснення рішення нетехнічним', desc: '«Поясни простими словами, як працює [технічне рішення], для нетехнічної команди»' },
+      { icon: 'file-text', title: 'Технічне завдання', desc: '«Структуруй ТЗ на розробку [функціонал]: вимоги, обмеження, критерії приймання»' },
+      { icon: 'bug', title: 'Опис бага', desc: '«Оформи опис дефекту [опис]: кроки відтворення, очікуваний і фактичний результат»' },
+    ],
+  },
+  project_management: {
+    label: 'Управління проєктами (PM)',
+    prompts: [
+      { icon: 'kanban-square', title: 'Статус-репорт', desc: '«Склади статус-звіт по проєкту [назва] за тиждень: зроблено, ризики, наступні кроки»' },
+      { icon: 'list-checks', title: 'Протокол зустрічі', desc: '«Структуруй нотатки зустрічі [вставити] у протокол: рішення, відповідальні, дедлайни»' },
+      { icon: 'triangle-alert', title: 'Ризик-реєстр', desc: '«Виділи ризики проєкту [опис] і запропонуй по одному варіанту мітигації для кожного»' },
+    ],
+  },
+  executive_office: {
+    label: 'Виконавчий офіс / адміністрація',
+    prompts: [
+      { icon: 'briefcase', title: 'Порядок денний наради', desc: '«Структуруй порядок денний наради на тему [тема]: 4-5 пунктів з орієнтовним часом»' },
+      { icon: 'file-text', title: 'Резюме для керівника', desc: '«Стисни звіт [вставити] у 5 речень для швидкого ознайомлення керівника»' },
+      { icon: 'megaphone', title: 'Оголошення від керівництва', desc: '«Напиши коротке оголошення співробітникам від імені керівництва про [подія], тон офіційний, але людяний»' },
+    ],
+  },
+};
+
+function initRolePrompts() {
+  const select = document.getElementById('roleSelect');
+  const cardsWrap = document.getElementById('rolePromptCards');
+  const hint = document.getElementById('rolePromptHint');
+  if (!select || !cardsWrap) return;
+
+  Object.entries(ROLE_PROMPTS).forEach(([key, dept]) => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = dept.label;
+    select.appendChild(opt);
+  });
+
+  select.addEventListener('change', () => {
+    const dept = ROLE_PROMPTS[select.value];
+    if (!dept) {
+      cardsWrap.hidden = true;
+      cardsWrap.innerHTML = '';
+      if (hint) hint.hidden = false;
+      return;
+    }
+    cardsWrap.innerHTML = dept.prompts.map(p => `
+      <div class="tip-card">
+        <i data-lucide="${p.icon}"></i>
+        <h4>${p.title}</h4>
+        <p>${p.desc}</p>
+      </div>
+    `).join('');
+    cardsWrap.hidden = false;
+    if (hint) hint.hidden = true;
+    if (window.lucide) lucide.createIcons();
+    if (window.gsap) {
+      gsap.fromTo(cardsWrap.children, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.06 });
+    }
+  });
+}
+
 function initNavToggle() {
   const toggle = document.getElementById('navToggle');
   const links = document.querySelector('.nav-links');
